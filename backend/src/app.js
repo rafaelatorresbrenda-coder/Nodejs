@@ -7,7 +7,7 @@ app.use(express.json())
 let usuario = [];
 
 app.get('/usuarios', (req, res)=>{
-    const nomeBusca = req.query.nome
+    const nomeBusca = req.query.nome;
 
     if(nomeBusca){
         const nome = usuario.filter((i)=> {
@@ -18,6 +18,38 @@ app.get('/usuarios', (req, res)=>{
      res.status(200).json(usuario);
 })
 
+app.delete('/usuarios/:id',(res,req)=>{
+    const idDelete = parseInt(req.params.id);
+    console.log(idDelete);
+    const index = usuario.findIndex((i)=>{
+        return i.id == idDelete;
+        console.log("index: " + index);
+    })
+    if(index == -1){
+        return res.status(404).json({msg: "id não encontrado!"})
+    }else{
+        usuario.splice(index,1);
+        return res.status(200).json({msg:"Usuário excluido com suceso!"})
+    }
+})
+
+
+
+
+//busca por id (Route Paran)
+app.get('/usuarios/:id', (req, res)=> {
+    const idBusca = parseInt(req.params.id);
+    const idBuscado =  usuario.find((i)=> {
+        return i.id == idBusca
+    })
+
+    if(!idBuscado){
+
+        return res.status(404).json({msg:"Usuario não encontrado"})
+    }     
+    return res.status(200).json(idBuscado);
+
+})
 
 
 app.post('/usuarios', (req, res)=> {
