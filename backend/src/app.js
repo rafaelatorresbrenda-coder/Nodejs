@@ -33,9 +33,6 @@ app.delete('/usuarios/:id',(res,req)=>{
     }
 })
 
-
-
-
 //busca por id (Route Paran)
 app.get('/usuarios/:id', (req, res)=> {
     const idBusca = parseInt(req.params.id);
@@ -48,15 +45,30 @@ app.get('/usuarios/:id', (req, res)=> {
         return res.status(404).json({msg:"Usuario não encontrado"})
     }     
     return res.status(200).json(idBuscado);
-
 })
 
+app.put('/usuarios/:id',(req, res) =>{
+    const idUpdade = parseInt(req.params.id);
+    const{nome} = req.body;
+    const usuarioExiste = usuario.find((i)=>{
+        return i.id == idUpdade;
+    })
+    if(usuarioExiste){
+        return res.status(404).json({msg:"Usuário no encontrado!"})
+    }
+    if(nome){
+        usuarioExite.nome = "Julia Silva";
+        return res.status(200).json({msg:"Usuario Atualizado"})
+    }
+})
 
 app.post('/usuarios', (req, res)=> {
 console.log(req.body);
 usuario.push(req.body);
 res.status(201).json({mensagem: "Cliente Cadastrado!"})
 })
+
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT,()=>{
